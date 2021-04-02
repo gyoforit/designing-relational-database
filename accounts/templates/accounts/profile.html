@@ -3,18 +3,18 @@
 {% block content %}
   <div class="d-flex justify-content-between align-items-end"> 
     {% if request.user != member %}
-      <h1>{{ member.username }}님의 프로필</h1>
+      <h1>🙋 {{ member.username }}님의 프로필</h1>
     {% else %}
-      <h1>내 프로필</h1>
+      <h1>🙋 내 프로필</h1>
     {% endif %}
     <div>
       <span>팔로워 {{ member.followers.all|length }}</span>
-      <span>|</span>
-      <span>팔로잉 {{ member.followings.all|length }}</span>
+      <span class="mx-2">|</span>
+      <span class="me-2">팔로잉 {{ member.followings.all|length }}</span>
       {% if request.user != member %}
         <form action="{% url 'accounts:follow' member.pk %}" method="POST" class="d-inline">
           {% csrf_token %}
-          <button>
+          <button class="btn btn-primary btn-sm">
             {% if request.user in member.followers.all %}
               팔로우 취소
             {% else %}
@@ -26,5 +26,20 @@
     </div>
   </div>
   <hr>
-
+  {% if request.user != member %}
+    <h3 class="mt-5 mb-4">📄 {{ member.username }}님이 작성한 글</h3>
+  {% else %}
+    <h3>📄 내가 작성한 글</h3>
+  {% endif %}
+  {% include 'accounts/table.html' %}
+  <br>
+  <hr>
+  {% if request.user != member %}
+    <h3 class="mt-5 mb-4">❤️ {{ member.username }}님이 좋아요한 글</h3>
+  {% else %}
+    <h3>❤️ 내가 좋아요한 글</h3>
+  {% endif %}
+  {% include 'accounts/like_table.html' %}
+  <br>
+  <hr>
 {% endblock %}

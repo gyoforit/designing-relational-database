@@ -1,17 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>영화 리뷰 목록</h1>
-  <hr>
-  {% for review in reviews %}
-    <div class="d-flex justify-content-between">
-      <a href="{% url 'community:detail' review.pk %}" class="fs-3 text-dark text-decoration-none">제목: {{ review.title }}</a>
-      <a href="{% url 'accounts:profile' review.user.username %}" class="text-dark text-decoration-none">작성자: {{ review.user }}</a>
-    </div>
-    <p class="fs-5">영화: {{ review.movie_title }}</p>
-    <div>
-      <div style="font-size: 24px;" class="d-inline"><i class="fas fa-heart" style="color: crimson;"></i></div>
-      <span>{{ review.like_users.all|length }}</span>
-    </div>
-  {% endfor %}
+  {% comment %} <h1>영화 리뷰 목록</h1>
+  <hr> {% endcomment %}
+  {% include 'community/table.html' %}
 {% endblock %}

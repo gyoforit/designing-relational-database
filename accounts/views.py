@@ -91,8 +91,12 @@ def change_password(request):
 @require_safe
 def profile(request, username):
     member = get_object_or_404(User, username=username)
+    reviews = member.review_set.order_by('-pk')
+    like_reviews = member.like_reviews.order_by('-pk')
     context = {
         'member': member,
+        'reviews': reviews,
+        'like_reviews': like_reviews,
     }
     return render(request, 'accounts/profile.html', context)
 

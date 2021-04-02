@@ -1,0 +1,26 @@
+<table class="table table-hover">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">글번호</th>
+      <th scope="col">영화</th>
+      <th scope="col">평점</th>
+      <th scope="col">글제목</th>
+      <th scope="col">날짜</th>
+      <th scope="col">좋아요</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in reviews %}
+      <tr class="text-center">
+        <th scope="row">{{ review.pk }}</th>
+        <td>{{ review.movie_title }}</td>
+        <td>{{ review.rank }}</td>
+        <td>
+          <a href="{% url 'community:detail' review.pk %}" class="text-decoration-none text-dark">{{ review.title }}</a>
+        </td>
+        <td>{{ review.created_at|date:"Y/m/d" }}</td>
+        <td>{{ review.like_users.all|length }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
