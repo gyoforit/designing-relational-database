@@ -10,14 +10,29 @@
   <p>내용: {{ review.content }}</p>
   <p>작성시간: {{ review.created_at }}</p>
   <p>수정시간: {{ review.updated_at }}</p>
-  <div class="d-flex justify-content-end">
-    {% if request.user == review.user %}
-      <a href="{% url 'community:update' review.pk %}" class="btn btn-primary me-1">수정</a>
-      <form action="{% url 'community:delete' review.pk %}" method='POST' class='d-inline'>
+  <div class="d-flex justify-content-between">
+    <div>
+      <form action="{% url 'community:like' review.pk %}" method="POST" class="d-inline">
         {% csrf_token %}
-        <input type="submit" value="삭제" class="btn btn-danger">
+        <button style="font-size: 24px; border: 0; outline: 0; background-color: white;">
+          {% if request.user in review.like_users.all %}
+            <i class="fas fa-heart" style="color: crimson;"></i>
+          {% else %}
+            <i class="far fa-heart" style="color: crimson;"></i>
+          {% endif %}
+        </button>
       </form>
-    {% endif %}
+      <span>{{ review.like_users.all|length }}명이 이 글을 좋아합니다.</span>
+    </div>
+    <div>
+      {% if request.user == review.user %}
+        <a href="{% url 'community:update' review.pk %}" class="btn btn-primary me-1">수정</a>
+        <form action="{% url 'community:delete' review.pk %}" method='POST' class='d-inline'>
+          {% csrf_token %}
+          <input type="submit" value="삭제" class="btn btn-danger">
+        </form>
+      {% endif %}
+    </div>
   </div>
   <hr>
   <h4>댓글 목록</h4>

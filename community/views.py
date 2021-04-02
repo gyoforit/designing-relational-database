@@ -103,3 +103,14 @@ def comment_delete(request, review_pk, comment_pk):
         return redirect('community:detail', review_pk)
     return redirect('community:index')
     
+
+@require_POST
+def like(request, review_pk):
+    if request.user.is_authenticated:
+        review = get_object_or_404(Review, pk=review_pk)
+        if review.like_users.filter(pk=request.user.pk).exists():
+            review.like_users.remove(request.user)
+        else:
+            review.like_users.add(request.user)
+        return redirect('community:detail', review.pk)
+    return redirect('accounts:login')

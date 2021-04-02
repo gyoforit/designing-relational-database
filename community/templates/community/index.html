@@ -6,5 +6,9 @@
   {% for review in reviews %}
     <a href="{% url 'community:detail' review.pk %}" class="fs-3 text-dark text-decoration-none">제목: {{ review.title }}</a>
     <p class="fs-5">영화: {{ review.movie_title }}</p>
+    <div>
+      <div style="font-size: 24px;" class="d-inline"><i class="fas fa-heart" style="color: crimson;"></i></div>
+      <span>{{ review.like_users.all|length }}</span>
+    </div>
   {% endfor %}
 {% endblock %}
