@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>영화 리뷰 목록</h1>
+  <hr>
+  {% for review in reviews %}
+    <a href="{% url 'community:detail' review.pk %}" class="fs-3 text-dark text-decoration-none">제목: {{ review.title }}</a>
+    <p class="fs-5">영화: {{ review.movie_title }}</p>
+  {% endfor %}
+{% endblock %}

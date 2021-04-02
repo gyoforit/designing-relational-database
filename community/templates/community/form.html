@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+  {% if request.resolver_match.url_name == 'create' %}
+    <h1>영화 리뷰 작성</h1>
+  {% elif request.resolver_match.url_name == 'update' %}
+    <h1>영화 리뷰 수정</h1>
+  {% endif %}
+  <hr>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="d-flex justify-content-end">
+      <input type="submit" value="작성" class="btn btn-outline-dark my-2">
+    </div>
+  </form>
+  <div class="d-flex justify-content-end">
+    <a href="{% url 'community:index' %}" class="btn btn-secondary">BACK</a>
+  </div>
+{% endblock %}

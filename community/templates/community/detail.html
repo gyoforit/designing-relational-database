@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+  <h1>{{ review.title }}</h1>
+  <hr>
+  <p>작성자: {{ review.user }}</p>
+  <p>영화: {{ review.movie_title }}</p>
+  <p>평점: {{ review.rank }}</p>
+  <p>내용: {{ review.content }}</p>
+  <p>작성시간: {{ review.created_at }}</p>
+  <p>수정시간: {{ review.updated_at }}</p>
+  <div class="d-flex justify-content-end">
+    {% if request.user == review.user %}
+      <a href="{% url 'community:update' review.pk %}" class="btn btn-primary me-1">수정</a>
+      <form action="{% url 'community:delete' review.pk %}" method='POST' class='d-inline'>
+        {% csrf_token %}
+        <input type="submit" value="삭제" class="btn btn-danger">
+      </form>
+    {% endif %}
+  </div>
+  <hr>
+  <h4>댓글 목록</h4>
+  {% if comments %}
+    <p class="pt-1"><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+  {% else %}
+    <p class="text-center"><b>댓글이 없습니다.</b></p>
+  {% endif %}
+  <ul class="list-group">
+    {% for comment in comments %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ comment.user }} : {{ comment.content }} ({{ comment.created_at }})
+        {% if request.user == comment.user %}
+          <form action="{% url 'community:comment_delete' review.pk comment.pk %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <input type="submit" value="삭제" class="btn btn-danger btn-sm">
+          </form>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  <hr>
+  <h4>댓글 작성</h4>
+  <form action="{% url 'community:comments_create' review.pk %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form comment_form %}
+    <div class="d-flex justify-content-end mt-2">
+      <input type="submit" value="작성" class="btn btn-outline-dark">
+    </div>
+  </form>
+  <hr>
+  <div class="d-flex justify-content-end">
+    <a href="{% url 'community:index' %}" class="btn btn-secondary">BACK</a>
+  </div>
+{% endblock %}

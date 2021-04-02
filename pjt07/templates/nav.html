@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand pe-3" href="{% url 'community:index' %}">REVIEWER</a>
+    <div class="collapse navbar-collapse d-flex justify-content-between text-white" id="navbarSupportedContent">
+      <a class="active text-decoration-none text-white" aria-current="page" href="{% url 'community:create' %}">NEW</a>
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          {% if request.user.is_authenticated %}
+            <span class="me-3">환영합니다, {{ request.user }}님!</span>
+            <form action="{% url 'accounts:logout' %}" method="POST" class="d-inline">
+              {% csrf_token %}
+              <input type="submit" value="로그아웃" class="btn btn-secondary">
+            </form>
+            <a class="active btn btn-light" aria-current="page" href="{% url 'accounts:update' %}">회원정보수정</a>
+            <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
+              {% csrf_token %}
+              <input type="submit" value="회원탈퇴" class="btn btn-danger">
+            </form>
+          {% else %}
+            <span class="me-3">환영합니다, 손님!</span>
+            <a class="active btn btn-primary" aria-current="page" href="{% url 'accounts:login' %}">로그인</a>
+            <a class="active btn btn-light" aria-current="page" href="{% url 'accounts:signup' %}">회원가입</a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
