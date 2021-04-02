@@ -79,6 +79,8 @@
 - 팔로우, 팔로우 취소 버튼 외에 팔로우, 팔로잉 회원 수 / 작성한 글 목록 / 좋아요한 글 목록이 보인다.
 - 네비게이션 바에 있던 '회원정보수정', '회원탈퇴' 버튼을 내 프로필 페이지 내부로 이동했다.
 
+
+
 #### 2. Social login
 
 > 소셜 로그인 중 가장 쉽다고 한 google 을 도전해보았지만... 쉽지 않았다.
@@ -106,19 +108,19 @@
 
 
 
-#### 4. new-badge
+#### 4. new-badge (생성된 지 10분 미만인 글 옆에만 띄우는 뱃지)
 
 > 이것 역시 쉽지 않았다... 하지만 해냈다! 🏆
 
 1. 처음엔 html에서 `{% if 현재시간 - review.create_at < 특정시간 %}` 형태로 구현하려고 했는데 DTL에서는 뺄셈을 하지 못해서 실패했다. 그래서 view에서 해결하는 것으로 접근 방향을 바꿨다.
-2. datetime 모듈을 이용하여 받아온 현재시간(current)과 모든 리뷰들의 생성시각을 비교하고자 했다. `paginator.get_page(page)` 를 할당한 `reviews`를 for문으로 돌면서 created_at 필드에 접근하려 했는데, 일반 쿼리셋과 타입이 달라서 그런지 current와 계산이 되지 않았다.
+2. datetime 모듈을 이용하여 받아온 현재시간(current)과 모든 리뷰들의 생성시각을 비교하고자 했다. `paginator.get_page(page)` 를 할당한 `reviews`를 for문으로 돌면서 `created_at` 필드에 접근하려 했는데, 일반 쿼리셋과 타입이 달라서 그런지 current와 계산이 되지 않았다.
 3. 파이썬의 날짜/시간 관련 함수를 찾다가 `timedelta`라는 함수를 발견하여 현재 시간의 10분 전인 `ten_minutes_before` 변수를 생성했다.
-4. 또한 ORM에서 시간을 비교할 수 있다는 점을 발견하여 모든 리뷰 객체 중 생성 날짜가 현재 날짜와 같고 + 생성 시각이 `ten_minutes_before` 보다 큰(즉, 생성된 지 10분 미만인) 리뷰만을 필터링하여 `new_reviews`에 받아 context에 넘겼다.
-5. html에서 해당 리뷰가 new_reviews에 있으면 'new' 뱃지를 보여주도록 구현했다.
+4. 또한 ORM에서 시간을 비교할 수 있다는 점을 발견하여 모든 리뷰 객체 중 생성 날짜가 현재 날짜와 같고 + 생성 시각이 `ten_minutes_before` 보다 큰(즉, 생성된 지 10분 미만인) 리뷰만을 필터링하여 `new_reviews`에 받아 `context`에 넘겼다.
+5. html에서 해당 리뷰가 `new_reviews`에 있으면 'new' 뱃지를 보여주도록 구현했다.
 
 
 
-- Pagination 과 new-badge 기능을 구현한 community/index 함수
+- Pagination 과 new-badge 기능을 구현한 `community/index` 함수
 
 ```python
 @require_safe
