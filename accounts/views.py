@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth import update_session_auth_hash
-from django.views.decorators.http import require_POST, require_http_methods
+from django.contrib.auth import update_session_auth_hash, get_user_model
+from django.views.decorators.http import require_POST, require_http_methods, require_safe
 from .forms import CustomUserCreationForm, CustomUserChangeForm
+
+User = get_user_model()
 
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
@@ -84,3 +86,26 @@ def change_password(request):
         'form': form,
     }
     return render(request, 'accounts/form.html', context)
+
+
+@require_safe
+def profile(request, username):
+    member = get_object_or_404(User, username=username)
+    context = {
+        'member': member,
+    }
+    return render(request, 'accounts/profile.html', context)
+
+
+@require_POST
+def follow(request, user_pk):
+    if request.user.is_authenticated:
+        other = get_object_or_404(User, pk=user_pk)
+        myself = request.user
+        if myself != other:
+            if other.followers.filter(pk=myself.pk).exists():
+                other.followers.remove(myself)
+            else:
+                other.followers.add(myself)
+        return redirect('accounts:profile', other.username)
+    return redirect('accounts:login')
