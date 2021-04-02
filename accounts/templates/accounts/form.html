@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
+{% load socialaccount %}
 
 {% block content %}
   {% if request.resolver_match.url_name == 'login' %}
@@ -20,6 +21,9 @@
       <input type="submit" value="확인" class="btn btn-outline-dark my-2">
     </div>
   </form>
+  {% if request.resolver_match.url_name == 'login' %}
+    <a href="{% provider_login_url 'google' %}">Google로 로그인</a>
+  {% endif %}
   <div class="d-flex justify-content-end">
     <a href="{% url 'community:index' %}" class="btn btn-secondary content-font">BACK</a>
   </div>

@@ -36,7 +36,7 @@
   {% if request.user != member %}
     <h3 class="mt-5 mb-4">📄 {{ member.username }}님이 작성한 글</h3>
   {% else %}
-    <h3>📄 내가 작성한 글</h3>
+    <h3 class="mt-5 mb-4">📄 내가 작성한 글</h3>
   {% endif %}
   {% if reviews %}
     {% include 'accounts/table.html' %}
@@ -49,7 +49,7 @@
   {% if request.user != member %}
     <h3 class="mt-5 mb-4">❤️ {{ member.username }}님이 좋아요한 글</h3>
   {% else %}
-    <h3>❤️ 내가 좋아요한 글</h3>
+    <h3 class="mt-5 mb-4">❤️ 내가 좋아요한 글</h3>
   {% endif %}
   {% if like_reviews %}
     {% include 'accounts/like_table.html' %}
