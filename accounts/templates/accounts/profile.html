@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="d-flex justify-content-between align-items-end"> 
+  <div class="d-flex justify-content-between align-items-end content-font"> 
     {% if request.user != member %}
       <h1>🙋 {{ member.username }}님의 프로필</h1>
     {% else %}
-      <h1>🙋 내 프로필</h1>
+      <div>
+        <h1 class="d-inline me-2">🙋 내 프로필</h1>
+        <a class="active btn btn-warning btn-sm content-font" aria-current="page" href="{% url 'accounts:update' %}">회원정보수정</a>
+        <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
+          {% csrf_token %}
+          <input type="submit" value="회원탈퇴" class="btn btn-danger btn-sm content-font">
+        </form>
+      </div>
     {% endif %}
     <div>
       <span>팔로워 {{ member.followers.all|length }}</span>
@@ -31,7 +38,12 @@
   {% else %}
     <h3>📄 내가 작성한 글</h3>
   {% endif %}
-  {% include 'accounts/table.html' %}
+  {% if reviews %}
+    {% include 'accounts/table.html' %}
+  {% else %}
+    <br>
+    <h5 class="text-center content-font">작성한 글이 없습니다.</h5>
+  {% endif %}
   <br>
   <hr>
   {% if request.user != member %}
@@ -39,7 +51,12 @@
   {% else %}
     <h3>❤️ 내가 좋아요한 글</h3>
   {% endif %}
-  {% include 'accounts/like_table.html' %}
+  {% if like_reviews %}
+    {% include 'accounts/like_table.html' %}
+  {% else %}
+    <br>
+    <h5 class="text-center content-font">좋아요한 글이 없습니다.</h5>
+  {% endif %}
   <br>
   <hr>
 {% endblock %}

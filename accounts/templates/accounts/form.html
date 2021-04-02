@@ -3,16 +3,16 @@
 
 {% block content %}
   {% if request.resolver_match.url_name == 'login' %}
-    <h1>로그인</h1>
+    <h1 class="content-font">로그인</h1>
   {% elif request.resolver_match.url_name == 'signup' %}
-    <h1>회원가입</h1>
+    <h1 class="content-font">회원가입</h1>
   {% elif request.resolver_match.url_name == 'update' %}
-    <h1>회원정보수정</h1>
+    <h1 class="content-font">회원정보수정</h1>
   {% elif request.resolver_match.url_name == 'change_password' %}
-    <h1>비밀번호변경</h1>
+    <h1 class="content-font">비밀번호변경</h1>
   {% endif %}
   <hr>
-  <form action="" method="POST">
+  <form action="" method="POST" class="content-font">
     {% csrf_token %}
     {% bootstrap_form form %}
     <hr>
@@ -21,6 +21,6 @@
     </div>
   </form>
   <div class="d-flex justify-content-end">
-    <a href="{% url 'community:index' %}" class="btn btn-secondary">BACK</a>
+    <a href="{% url 'community:index' %}" class="btn btn-secondary content-font">BACK</a>
   </div>
 {% endblock %}

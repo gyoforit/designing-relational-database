@@ -1,26 +1,21 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand pe-3" href="{% url 'community:index' %}">REVIEWER</a>
+    <a class="navbar-brand pe-3 title-font" href="{% url 'community:index' %}">REVIEWER</a>
     <div class="collapse navbar-collapse d-flex justify-content-between text-white" id="navbarSupportedContent">
-      <a class="active text-decoration-none text-white" aria-current="page" href="{% url 'community:create' %}">NEW</a>
+      <a class="active text-decoration-none text-white" aria-current="page" href="{% url 'community:create' %}"><i class="fas fa-plus"></i></a>
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
           {% if request.user.is_authenticated %}
-            <span class="me-3">환영합니다, {{ request.user }}님!</span>
-            <a href="{% url 'accounts:profile' request.user.username %}" class="active btn btn-success">내 프로필</a>
+            <span class="me-3 content-font">환영합니다, {{ request.user }}님!</span>
+            <a href="{% url 'accounts:profile' request.user.username %}" class="active btn btn-success content-font">내 프로필</a>
             <form action="{% url 'accounts:logout' %}" method="POST" class="d-inline">
               {% csrf_token %}
-              <input type="submit" value="로그아웃" class="btn btn-secondary">
-            </form>
-            <a class="active btn btn-light" aria-current="page" href="{% url 'accounts:update' %}">회원정보수정</a>
-            <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
-              {% csrf_token %}
-              <input type="submit" value="회원탈퇴" class="btn btn-danger">
+              <input type="submit" value="로그아웃" class="btn btn-secondary content-font">
             </form>
           {% else %}
-            <span class="me-3">환영합니다, 손님!</span>
-            <a class="active btn btn-primary" aria-current="page" href="{% url 'accounts:login' %}">로그인</a>
-            <a class="active btn btn-light" aria-current="page" href="{% url 'accounts:signup' %}">회원가입</a>
+            <span class="me-3 content-font">환영합니다, 손님!</span>
+            <a class="active btn btn-primary content-font" aria-current="page" href="{% url 'accounts:login' %}">로그인</a>
+            <a class="active btn btn-light content-font" aria-current="page" href="{% url 'accounts:signup' %}">회원가입</a>
           {% endif %}
         </li>
       </ul>

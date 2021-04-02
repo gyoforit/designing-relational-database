@@ -2,14 +2,16 @@
 {% load bootstrap5 %}
 
 {% block content %}
-  <h1>{{ review.title }}</h1>
-  <hr>
-  <p>작성자: {{ review.user }}</p>
-  <p>영화: {{ review.movie_title }}</p>
-  <p>평점: {{ review.rank }}</p>
-  <p>내용: {{ review.content }}</p>
-  <p>작성시간: {{ review.created_at }}</p>
-  <p>수정시간: {{ review.updated_at }}</p>
+  <div class="content-font">
+    <h1>{{ review.title }}</h1>
+    <hr>
+    <p>작성자: {{ review.user }}</p>
+    <p>영화: {{ review.movie_title }}</p>
+    <p>평점: {{ review.rank }}</p>
+    <p>내용: {{ review.content }}</p>
+    <p>작성시간: {{ review.created_at }}</p>
+    <p>수정시간: {{ review.updated_at }}</p>
+  </div>
   <div class="d-flex justify-content-between">
     <div>
       <form action="{% url 'community:like' review.pk %}" method="POST" class="d-inline">
@@ -22,49 +24,49 @@
           {% endif %}
         </button>
       </form>
-      <span>{{ review.like_users.all|length }}명이 이 글을 좋아합니다.</span>
+      <span class="content-font">{{ review.like_users.all|length }}명이 이 글을 좋아합니다.</span>
     </div>
     <div>
       {% if request.user == review.user %}
-        <a href="{% url 'community:update' review.pk %}" class="btn btn-primary me-1">수정</a>
+        <a href="{% url 'community:update' review.pk %}" class="btn btn-primary me-1 content-font">수정</a>
         <form action="{% url 'community:delete' review.pk %}" method='POST' class='d-inline'>
           {% csrf_token %}
-          <input type="submit" value="삭제" class="btn btn-danger">
+          <input type="submit" value="삭제" class="btn btn-danger content-font">
         </form>
       {% endif %}
     </div>
   </div>
   <hr>
-  <h4>댓글 목록</h4>
+  <h4 class="content-font">댓글 목록</h4>
   {% if comments %}
-    <p class="pt-1"><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+    <p class="pt-1 content-font"><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
   {% else %}
-    <p class="text-center"><b>댓글이 없습니다.</b></p>
+    <p class="text-center content-font"><b>댓글이 없습니다.</b></p>
   {% endif %}
   <ul class="list-group">
     {% for comment in comments %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
+      <li class="list-group-item d-flex justify-content-between align-items-center content-font">
         {{ comment.user }} : {{ comment.content }} ({{ comment.created_at }})
         {% if request.user == comment.user %}
           <form action="{% url 'community:comment_delete' review.pk comment.pk %}" method="POST" class="d-inline">
             {% csrf_token %}
-            <input type="submit" value="삭제" class="btn btn-danger btn-sm">
+            <input type="submit" value="삭제" class="btn btn-danger btn-sm content-font">
           </form>
         {% endif %}
       </li>
     {% endfor %}
   </ul>
   <hr>
-  <h4>댓글 작성</h4>
+  <h4 class="content-font">댓글 작성</h4>
   <form action="{% url 'community:comments_create' review.pk %}" method="POST">
     {% csrf_token %}
     {% bootstrap_form comment_form %}
     <div class="d-flex justify-content-end mt-2">
-      <input type="submit" value="작성" class="btn btn-outline-dark">
+      <input type="submit" value="작성" class="btn btn-outline-dark content-font">
     </div>
   </form>
   <hr>
   <div class="d-flex justify-content-end">
-    <a href="{% url 'community:index' %}" class="btn btn-secondary">BACK</a>
+    <a href="{% url 'community:index' %}" class="btn btn-secondary content-font">BACK</a>
   </div>
 {% endblock %}
