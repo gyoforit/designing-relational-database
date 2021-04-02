@@ -18,6 +18,9 @@
         <td>{{ review.rank }}</td>
         <td>
           <a href="{% url 'community:detail' review.pk %}" class="text-decoration-none text-dark">{{ review.title }}</a>
+          {% if review in new_reviews %}
+            <span class="badge bg-warning">new</span>
+          {% endif %}
         </td>
         <td>
           <a href="{% url 'accounts:profile' review.user.username %}" class="text-decoration-none text-dark">{{ review.user }}</a>
@@ -28,3 +31,29 @@
     {% endfor %}
   </tbody>
 </table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if reviews.has_previous %}                         
+    <li class="page-item">
+        <a class="page-link" href="?p={{ reviews.previous_page_number }}">👈</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">👈</a>
+    </li>
+    {% endif %}
+    <li class="page-item">
+        <a class="page-link text-dark" href="#">{{ reviews.number }}/{{ reviews.paginator.num_pages }}</a>
+    </li>
+    {% if reviews.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?p={{ reviews.next_page_number }}">👉</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">👉</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>

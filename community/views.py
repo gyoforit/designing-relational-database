@@ -4,15 +4,25 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST, require_safe, require_http_methods
 from .forms import ReviewForm, CommentForm
 from .models import Review, Comment
+from django.core.paginator import Paginator
+from datetime import datetime, timedelta
 
 User = get_user_model()
 
 # Create your views here.
 @require_safe
 def index(request):
-    reviews = Review.objects.order_by('-pk')
+    reviews_all = Review.objects.order_by('-pk')
+    page = int(request.GET.get('p', 1))
+    paginator = Paginator(reviews_all, 10)
+    reviews = paginator.get_page(page)
+    current = datetime.today()
+    ten_minutes_before = current - timedelta(minutes=10)
+    new_reviews = Review.objects.filter(created_at__date=current, created_at__time__gt=ten_minutes_before.time())
     context = {
         'reviews': reviews,
+        'ten_minutes_before': ten_minutes_before,
+        'new_reviews': new_reviews,
     }
     return render(request, 'community/index.html', context)
 
