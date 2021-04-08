@@ -4,14 +4,16 @@
 
 {% block content %}
   <div class="content-font">
-    <h1>{{ review.title }}</h1>
+    <h2 class="fw-bold">{{ review.title }}</h2>
+    <p class="d-inline">{{ review.user }}</p>
+    <p class="d-inline mx-2">|</p>
+    <p class="d-inline">영화: {{ review.movie_title }}</p>
+    <p class="d-inline mx-2">|</p>
+    <p class="d-inline">평점: {{ review.rank }}점</p>
+    <p class="d-inline mx-2">|</p>
+    <p class="d-inline">{{ review.created_at|naturaltime }}</p>
     <hr>
-    <p>작성자: {{ review.user }}</p>
-    <p>영화: {{ review.movie_title }}</p>
-    <p>평점: {{ review.rank }}</p>
-    <p>내용: {{ review.content }}</p>
-    <p>작성시간: {{ review.created_at }}</p>
-    <p>수정시간: {{ review.updated_at }}</p>
+    <p>{{ review.content }}</p>
   </div>
   <div class="d-flex justify-content-between">
     <div>
@@ -61,10 +63,8 @@
   </div>
 
   <hr>
-  <h4 class="content-font">댓글 목록</h4>
-  {% if comments %}
-    <p class="pt-1 content-font"><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
-  {% else %}
+  <h6 class="fw-bold content-font">댓글 {{ comments|length }}</h6>
+  {% if not comments %}
     <p class="text-center content-font"><b>댓글이 없습니다.</b></p>
   {% endif %}
   <ul class="list-group">
@@ -81,7 +81,7 @@
     {% endfor %}
   </ul>
   <hr>
-  <h4 class="content-font">댓글 작성</h4>
+  <h6 class="fw-bold content-font">댓글 작성</h6>
   <form action="{% url 'community:comments_create' review.pk %}" method="POST">
     {% csrf_token %}
     {% bootstrap_form comment_form %}
@@ -91,6 +91,6 @@
   </form>
   <hr>
   <div class="d-flex justify-content-end">
-    <a href="{% url 'community:index' %}" class="btn btn-secondary content-font">BACK</a>
+    <a href="{% url 'community:index' %}" class="btn btn-secondary content-font">목록</a>
   </div>
 {% endblock %}
