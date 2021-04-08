@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
+{% load humanize %}
 
 {% block content %}
   <div class="content-font">
@@ -28,14 +29,37 @@
     </div>
     <div>
       {% if request.user == review.user %}
-        <a href="{% url 'community:update' review.pk %}" class="btn btn-primary me-1 content-font">수정</a>
-        <form action="{% url 'community:delete' review.pk %}" method='POST' class='d-inline'>
-          {% csrf_token %}
-          <input type="submit" value="삭제" class="btn btn-danger content-font">
-        </form>
+        <a href="{% url 'community:update' review.pk %}" class="btn btn-sm btn-primary me-1 content-font">수정</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-sm btn-danger content-front" data-bs-toggle="modal" data-bs-target="#deleteModal">
+          삭제
+        </button>
       {% endif %}
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade content-font" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">알림</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          정말로 삭제하시겠습니까?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">취소</button>
+          <form action="{% url 'community:delete' review.pk %}" method='POST' class='d-inline'>
+            {% csrf_token %}
+            <input type="submit" value="삭제" class="btn btn-sm btn-danger content-font">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <hr>
   <h4 class="content-font">댓글 목록</h4>
   {% if comments %}

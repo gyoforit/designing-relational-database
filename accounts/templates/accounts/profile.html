@@ -8,12 +8,35 @@
       <div>
         <h1 class="d-inline me-2">🙋 내 프로필</h1>
         <a class="active btn btn-warning btn-sm content-font" aria-current="page" href="{% url 'accounts:update' %}">회원정보수정</a>
-        <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
-          {% csrf_token %}
-          <input type="submit" value="회원탈퇴" class="btn btn-danger btn-sm content-font">
-        </form>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger btn-sm content-font" data-bs-toggle="modal" data-bs-target="#deleteModal">
+          회원탈퇴
+        </button>
       </div>
     {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">알림</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            정말로 탈퇴하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
+              {% csrf_token %}
+              <input type="submit" value="네" class="btn btn-secondary btn-sm content-font">
+            </form>
+            <button type="button" class="btn btn-primary btn-sm content-font" data-bs-dismiss="modal">아니오</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div>
       <span>팔로워 {{ member.followers.all|length }}</span>
       <span class="mx-2">|</span>
