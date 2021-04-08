@@ -22,6 +22,11 @@
 - 글 마다 좋아요 개수가 보인다.
 - 한 페이지에 10개의 게시물만 보인다.
 
+< 21.04.09 업데이트>
+
+- 'new' 뱃지 간소화(new->n, 둥근 모양으로 변경)
+- 댓글이 달린 글의 경우 글제목 옆에 댓글 개수가 보임
+
 ![](README.assets/index.PNG)
 
 
@@ -31,7 +36,16 @@
 - 좋아요 버튼을 하트로 구현했다.
 - 버튼 옆에 좋아요를 누른 사람의 수를 보여준다.
 
-<img src="README.assets/detail.PNG" style="zoom:67%;" />
+< 21.04.09 업데이트 >
+
+- 글 정보 깔끔하게 정리
+- 제목 크기 조정
+- 댓글 목록 -> 댓글 {댓글개수} / BACK -> 목록 으로 바꾸는 등 자잘한 것들 정리
+- 글 삭제 버튼 클릭 시 모달 띄워서 재확인
+
+<img src="README.assets/detail.PNG"  />
+
+![](README.assets/detail2.PNG)
 
 
 
@@ -41,7 +55,13 @@
 - 네비게이션 바에 있던 '회원정보수정', '회원탈퇴' 버튼이 내 프로필 상세 페이지로 이동했다.
 - 내가 작성한 글과 좋아요한 글 목록이 보인다.
 
+< 21.04.09 업데이트 >
+
+- 회원탈퇴 버튼 클릭 시 모달 띄워서 재확인
+
 ![](README.assets/profile_me.PNG)
+
+![](README.assets/profile_modal.PNG)
 
 
 
@@ -195,7 +215,41 @@ def index(request):
 
 
 
-#### 5. 기타
+#### 5. 글 삭제 / 회원 탈퇴 modal
+
+> 지난 프로젝트에서 구현하려다 실패한 모달을 드디어...!
+
+- 예전 프로젝트 README를 복습해보니 프론트엔드 프로젝트 할 때에도 모달 위치 때문에 모달 활성화가 안 되는 오류를 겪었었다. 이 때에도 모달 위치가 문제였던걸 고려해서 이번에 모달 위치를 바꿔보았더니 놀랍게도 성공했다!
+
+- 기존의 html 구조는 if문 안에 modal trigger와 modal이 동시에 들어갔다. (구조만 확인할 수 있도록 수도코드(?)로 작성)
+
+  ```html
+  </div>
+  {% if request.user == review.user %}
+  	수정 버튼
+  	modal trigger (삭제 버튼)
+  	modal 내용
+  {% endif %}
+  ```
+
+- 여기서 modal을 block content 바로 밑의 위치로 바꾸어주었더니 작동했다.
+
+  ```html
+  </div>
+  {% if request.user == review.user %}
+  	수정 버튼
+  	modal trigger (삭제 버튼)
+  {% endif %}
+  modal 내용
+  <div>
+  ....
+  ```
+
+- 이젠 modal 위치에 대해 절대 헷갈리지 않을 것이다...!
+
+
+
+#### 6. 기타
 
 - google font 사이트에서 가져온 영문/한글 폰트를 적용했다. 이 때 static을 활용해서 font에 해당하는 css style 파일을 따로 저장해두었다.
 - table 태그를 활용하여 index페이지의 영화 리뷰, profile페이지의 작성 글 목록/좋아요 글 목록을 표 형태로 구현하여 보다 깔끔하게 만들었다.
